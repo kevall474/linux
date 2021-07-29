@@ -118,7 +118,7 @@ for _p in "${pkgname[@]}"; do
     _package${_p#$pkgbase}
   }"
 done
-pkgver=5.13.4
+pkgver=5.13.6
 major=5.13
 pkgrel=1
 arch=(x86_64)
@@ -130,200 +130,302 @@ makedepends=("bison" "flex" "valgrind" "git" "cmake" "make" "extra-cmake-modules
              "llvm-libs" "lib32-llvm-libs" "lld" "kmod" "libmikmod" "lib32-libmikmod" "xmlto" "xmltoman" "graphviz" "imagemagick" "imagemagick-doc"
              "rsync" "cpio" "inetutils" "gzip" "zstd" "xz")
 patchsource=https://raw.githubusercontent.com/kevall474/kernel-patches-v2/main/$major
+
+# base
 source=("https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-$pkgver.tar.xz"
-        "config-$major"
-        "$patchsource/acs-patches/0001-pci-Enable-overrides-for-missing-ACS-capabilities.patch"
-        "$patchsource/bbr2-xanmod-patches/0001-net-tcp_bbr-broaden-app-limited-rate-sample-detectio.patch"
-        "$patchsource/bbr2-xanmod-patches/0002-net-tcp_rate-consolidate-inflight-tracking-approache.patch"
-        "$patchsource/bbr2-xanmod-patches/0003-net-tcp_rate-account-for-CE-marks-in-rate-sample.patch"
-        "$patchsource/bbr2-xanmod-patches/0004-net-tcp_bbr-v2-shrink-delivered_mstamp-first_tx_msta.patch"
-        "$patchsource/bbr2-xanmod-patches/0005-net-tcp_bbr-v2-snapshot-packets-in-flight-at-transmi.patch"
-        "$patchsource/bbr2-xanmod-patches/0006-net-tcp_bbr-v2-count-packets-lost-over-TCP-rate-samp.patch"
-        "$patchsource/bbr2-xanmod-patches/0007-net-tcp_bbr-v2-export-FLAG_ECE-in-rate_sample.is_ece.patch"
-        "$patchsource/bbr2-xanmod-patches/0008-net-tcp_bbr-v2-introduce-ca_ops-skb_marked_lost-CC-m.patch"
-        "$patchsource/bbr2-xanmod-patches/0009-net-tcp_bbr-v2-factor-out-tx.in_flight-setting-into-.patch"
-        "$patchsource/bbr2-xanmod-patches/0010-net-tcp_bbr-v2-adjust-skb-tx.in_flight-upon-merge-in.patch"
-        "$patchsource/bbr2-xanmod-patches/0011-net-tcp_bbr-v2-adjust-skb-tx.in_flight-upon-split-in.patch"
-        "$patchsource/bbr2-xanmod-patches/0012-net-tcp_bbr-v2-set-tx.in_flight-for-skbs-in-repair-w.patch"
-        "$patchsource/bbr2-xanmod-patches/0013-net-tcp-add-new-ca-opts-flag-TCP_CONG_WANTS_CE_EVENT.patch"
-        "$patchsource/bbr2-xanmod-patches/0014-net-tcp-re-generalize-TSO-sizing-in-TCP-CC-module-AP.patch"
-        "$patchsource/bbr2-xanmod-patches/0015-net-tcp-add-fast_ack_mode-1-skip-rwin-check-in-tcp_f.patch"
-        "$patchsource/bbr2-xanmod-patches/0016-net-tcp_bbr-v2-BBRv2-bbr2-congestion-control-for-Lin.patch"
-        "$patchsource/bbr2-xanmod-patches/0017-net-tcp_bbr-v2-remove-unnecessary-rs.delivered_ce-lo.patch"
-        "$patchsource/bbr2-xanmod-patches/0018-net-tcp_bbr-v2-remove-field-bw_rtts-that-is-unused-i.patch"
-        "$patchsource/bbr2-xanmod-patches/0019-net-tcp_bbr-v2-remove-cycle_rand-parameter-that-is-u.patch"
-        "$patchsource/bbr2-xanmod-patches/0020-net-tcp_bbr-v2-don-t-assume-prior_cwnd-was-set-enter.patch"
-        "$patchsource/bbr2-xanmod-patches/0021-net-tcp_bbr-v2-Fix-missing-ECT-markings-on-retransmi.patch"
-        "$patchsource/block-patches/0002-XANMOD-block-bfq-change-BLK_DEV_ZONED-depends-to-IOS.patch"
-        "$patchsource/block-patches/0003-XANMOD-block-set-rq_affinity-to-force-full-multithre.patch"
-        "$patchsource/clearlinux-patches/0101-i8042-decrease-debug-message-level-to-info.patch"
-        "$patchsource/clearlinux-patches/0102-increase-the-ext4-default-commit-age.patch"
-        "$patchsource/clearlinux-patches/0103-silence-rapl.patch"
-        "$patchsource/clearlinux-patches/0104-pci-pme-wakeups.patch"
-        "$patchsource/clearlinux-patches/0105-ksm-wakeups.patch"
-        "$patchsource/clearlinux-patches/0106-intel_idle-tweak-cpuidle-cstates.patch"
-        "$patchsource/clearlinux-patches/0108-smpboot-reuse-timer-calibration.patch"
-        "$patchsource/clearlinux-patches/0109-initialize-ata-before-graphics.patch"
-        "$patchsource/clearlinux-patches/0110-give-rdrand-some-credit.patch"
-        "$patchsource/clearlinux-patches/0111-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch"
-        "$patchsource/clearlinux-patches/0112-init-wait-for-partition-and-retry-scan.patch"
-        "$patchsource/clearlinux-patches/0113-print-fsync-count-for-bootchart.patch"
-        "$patchsource/clearlinux-patches/0114-add-boot-option-to-allow-unsigned-modules.patch"
-        "$patchsource/clearlinux-patches/0115-enable-stateless-firmware-loading.patch"
-        "$patchsource/clearlinux-patches/0116-migrate-some-systemd-defaults-to-the-kernel-defaults.patch"
-        "$patchsource/clearlinux-patches/0117-xattr-allow-setting-user.-attributes-on-symlinks-by-.patch"
-        "$patchsource/clearlinux-patches/0118-add-scheduler-turbo3-patch.patch"
-        "$patchsource/clearlinux-patches/0119-use-lfence-instead-of-rep-and-nop.patch"
-        "$patchsource/clearlinux-patches/0121-locking-rwsem-spin-faster.patch"
-        "$patchsource/clearlinux-patches/0122-ata-libahci-ignore-staggered-spin-up.patch"
-        "$patchsource/clearlinux-patches/0123-print-CPU-that-faults.patch"
-        "$patchsource/clearlinux-patches/0124-x86-microcode-Force-update-a-uCode-even-if-the-rev-i.patch"
-        "$patchsource/clearlinux-patches/0125-x86-microcode-echo-2-reload-to-force-load-ucode.patch"
-        "$patchsource/clearlinux-patches/0126-fix-bug-in-ucode-force-reload-revision-check.patch"
-        "$patchsource/clearlinux-patches/0127-nvme-workaround.patch"
-        "$patchsource/clearlinux-patches/0128-don-t-report-an-error-if-PowerClamp-run-on-other-CPU.patch"
-        "$patchsource/cpu-patches/more-uarches-for-kernel-5.8+.patch"
-        "$patchsource/cpu-patches/0012-XANMOD-init-Kconfig-Enable-O3-KBUILD_CFLAGS-optimiza.patch"
-        "$patchsource/cpu-patches/0013-XANMOD-Makefile-Turn-off-loop-vectorization-for-GCC-.patch"
-        "$patchsource/cpu-patches/0003-init-Kconfig-add-O1-flag.patch"
-        "https://raw.githubusercontent.com/kevall474/kernel-patches/main/5.12/compaction-patches/0001-compaction-patches.patch"
-        "$patchsource/elevator-xanmod-patches/0001-XANMOD-elevator-set-default-scheduler-to-bfq-for-blk.patch"
-        "$patchsource/futex-patches/0001-futex-resync-from-gitlab.collabora.com.patch"
-        "$patchsource/futex-tkg-patches/0007-v5.13-futex2_interface.patch"
-        "$patchsource/intel-zen-patches/0010-ZEN-intel-pstate-Implement-enable-parameter.patch"
-        "$patchsource/irq-zen-patches/0011-ZEN-Add-an-option-to-make-threadirqs-the-default.patch"
-        "$patchsource/lrng-patches/v41-0001-Linux-Random-Number-Generator.patch"
-        "$patchsource/lrng-patches/v41-0002-LRNG-allocate-one-DRNG-instance-per-NUMA-node.patch"
-        "$patchsource/lrng-patches/v41-0003-LRNG-sysctls-and-proc-interface.patch"
-        "$patchsource/lrng-patches/v41-0004-LRNG-add-switchable-DRNG-support.patch"
-        "$patchsource/lrng-patches/v41-0005-LRNG-add-common-generic-hash-support.patch"
-        "$patchsource/lrng-patches/v41-0006-crypto-DRBG-externalize-DRBG-functions-for-LRNG.patch"
-        "$patchsource/lrng-patches/v41-0007-LRNG-add-SP800-90A-DRBG-extension.patch"
-        "$patchsource/lrng-patches/v41-0008-LRNG-add-kernel-crypto-API-PRNG-extension.patch"
-        "$patchsource/lrng-patches/v41-0009-crypto-provide-access-to-a-static-Jitter-RNG-sta.patch"
-        "$patchsource/lrng-patches/v41-0010-LRNG-add-Jitter-RNG-fast-noise-source.patch"
-        "$patchsource/lrng-patches/v41-0011-LRNG-add-SP800-90B-compliant-health-tests.patch"
-        "$patchsource/lrng-patches/v41-0012-LRNG-add-interface-for-gathering-of-raw-entropy.patch"
-        "$patchsource/lrng-patches/v41-0013-LRNG-add-power-on-and-runtime-self-tests.patch"
-        "$patchsource/v4l2loopback-pf-patches/0001-v4l2loopback-5.12-merge-v0.12.5.patch"
-        "$patchsource/v4l2loopback-pf-patches/0002-v4l2loopback-5.13-confine-v4l2loopback_cleanup_modul.patch"
-        "$patchsource/mq-deadline-patches/0009-ZEN-Add-CONFIG-to-rename-the-mq-deadline-scheduler-v3.patch"
-        "$patchsource/ntfs3-xanmod-patches/ntfs3-xanmod-patches.patch"
-        "$patchsource/openrgb-zen-patches/0003-ZEN-Add-OpenRGB-patches.patch"
-        "$patchsource/security/security-xanmod-patches.patch"
-        "$patchsource/timer-xanmod-patches/0004-XANMOD-kconfig-add-500Hz-timer-interrupt-kernel-conf.patch"
-        "$patchsource/wine-patches/0007-v5.13-winesync.patch"
-        "$patchsource/xanmod-patches/0005-XANMOD-kconfig-set-PREEMPT-and-RCU_BOOST-without-del.patch"
-        "$patchsource/xanmod-patches/0006-XANMOD-dcache-cache_pressure-50-decreases-the-rate-a.patch"
-        "$patchsource/xanmod-patches/0007-XANMOD-sched-autogroup-Add-kernel-parameter-and-conf.patch"
-        "$patchsource/xanmod-patches/0009-XANMOD-cpufreq-tunes-ondemand-and-conservative-gover.patch"
-        "$patchsource/xanmod-patches/0011-XANMOD-lib-kconfig.debug-disable-default-CONFIG_SYMB.patch"
-        "$patchsource/zen-patches/0002-ZEN-Add-VHBA-driver.patch"
-        "$patchsource/zen-patches/0006-ZEN-Disable-stack-conservation-for-GCC.patch"
-        "$patchsource/zen-patches/0008-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-C.patch"
-        "$patchsource/zstd-xanmod-patches/0001-lib-zstd-Add-kernel-specific-API.patch"
-        "$patchsource/zstd-xanmod-patches/0002-lib-zstd-Add-decompress_sources.h-for-decompress_unz.patch"
-        "$patchsource/zstd-xanmod-patches/0003-lib-zstd-Upgrade-to-latest-upstream-zstd-version-1.4.patch"
-        "$patchsource/zstd-xanmod-patches/0004-MAINTAINERS-Add-maintainer-entry-for-zstd.patch"
-        "$patchsource/misc-patches/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch"
-        "$patchsource/misc-patches/0005-Disable-CPU_FREQ_GOV_SCHEDUTIL.patch"
-        "$patchsource/misc-patches/vm.max_map_count.patch")
-md5sums=("SKIP"
-         "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
+        "config-$major")
+md5sums=("09065416c01ad7511b84f5ea31fb5323"  #linux-5.13.6.tar.xz
+         "8627ed9a9c387c842039fe2bbadd18cb") #config-5.13
+
+# acs
+source+=("$patchsource/acs-patches/0001-pci-Enable-overrides-for-missing-ACS-capabilities.patch")
+md5sums+=("79122a262d2270b0c91fd8bdf8b66d14") #0001-pci-Enable-overrides-for-missing-ACS-capabilities.patch)
+
+# bbr2
+source+=("$patchsource/bbr2-xanmod-patches/0001-net-tcp_bbr-broaden-app-limited-rate-sample-detectio.patch"
+         "$patchsource/bbr2-xanmod-patches/0002-net-tcp_rate-consolidate-inflight-tracking-approache.patch"
+         "$patchsource/bbr2-xanmod-patches/0003-net-tcp_rate-account-for-CE-marks-in-rate-sample.patch"
+         "$patchsource/bbr2-xanmod-patches/0004-net-tcp_bbr-v2-shrink-delivered_mstamp-first_tx_msta.patch"
+         "$patchsource/bbr2-xanmod-patches/0005-net-tcp_bbr-v2-snapshot-packets-in-flight-at-transmi.patch"
+         "$patchsource/bbr2-xanmod-patches/0006-net-tcp_bbr-v2-count-packets-lost-over-TCP-rate-samp.patch"
+         "$patchsource/bbr2-xanmod-patches/0007-net-tcp_bbr-v2-export-FLAG_ECE-in-rate_sample.is_ece.patch"
+         "$patchsource/bbr2-xanmod-patches/0008-net-tcp_bbr-v2-introduce-ca_ops-skb_marked_lost-CC-m.patch"
+         "$patchsource/bbr2-xanmod-patches/0009-net-tcp_bbr-v2-factor-out-tx.in_flight-setting-into-.patch"
+         "$patchsource/bbr2-xanmod-patches/0010-net-tcp_bbr-v2-adjust-skb-tx.in_flight-upon-merge-in.patch"
+         "$patchsource/bbr2-xanmod-patches/0011-net-tcp_bbr-v2-adjust-skb-tx.in_flight-upon-split-in.patch"
+         "$patchsource/bbr2-xanmod-patches/0012-net-tcp_bbr-v2-set-tx.in_flight-for-skbs-in-repair-w.patch"
+         "$patchsource/bbr2-xanmod-patches/0013-net-tcp-add-new-ca-opts-flag-TCP_CONG_WANTS_CE_EVENT.patch"
+         "$patchsource/bbr2-xanmod-patches/0014-net-tcp-re-generalize-TSO-sizing-in-TCP-CC-module-AP.patch"
+         "$patchsource/bbr2-xanmod-patches/0015-net-tcp-add-fast_ack_mode-1-skip-rwin-check-in-tcp_f.patch"
+         "$patchsource/bbr2-xanmod-patches/0016-net-tcp_bbr-v2-BBRv2-bbr2-congestion-control-for-Lin.patch"
+         "$patchsource/bbr2-xanmod-patches/0017-net-tcp_bbr-v2-remove-unnecessary-rs.delivered_ce-lo.patch"
+         "$patchsource/bbr2-xanmod-patches/0018-net-tcp_bbr-v2-remove-field-bw_rtts-that-is-unused-i.patch"
+         "$patchsource/bbr2-xanmod-patches/0019-net-tcp_bbr-v2-remove-cycle_rand-parameter-that-is-u.patch"
+         "$patchsource/bbr2-xanmod-patches/0020-net-tcp_bbr-v2-don-t-assume-prior_cwnd-was-set-enter.patch"
+         "$patchsource/bbr2-xanmod-patches/0021-net-tcp_bbr-v2-Fix-missing-ECT-markings-on-retransmi.patch")
+md5sums+=("14cd0786e7a2fe401ecc68470c3974b2"  #0001-net-tcp_bbr-broaden-app-limited-rate-sample-detectio.patch
+          "0ed691752273d3084a6e000f88b8ffd1"  #0002-net-tcp_rate-consolidate-inflight-tracking-approache.patch
+          "0854a328871f1e4c3a0b88e7bade7397"  #0003-net-tcp_rate-account-for-CE-marks-in-rate-sample.patch
+          "1ac05ab50687ab1616f6389f1425d742"  #0004-net-tcp_bbr-v2-shrink-delivered_mstamp-first_tx_msta.patch
+          "ac62690bf791ef4e4e5980cf60c4b63d"  #0005-net-tcp_bbr-v2-snapshot-packets-in-flight-at-transmi.patch
+          "47fbe9222799a3225c15092e24a88817"  #0006-net-tcp_bbr-v2-count-packets-lost-over-TCP-rate-samp.patch
+          "83aba6fec39d54e30d653fee797212e4"  #0007-net-tcp_bbr-v2-export-FLAG_ECE-in-rate_sample.is_ece.patch
+          "beef0323e0ab80ae8c4a31b90733a67a"  #0008-net-tcp_bbr-v2-introduce-ca_ops-skb_marked_lost-CC-m.patch
+          "d520d97e01c43714a7db083be5c33899"  #0009-net-tcp_bbr-v2-factor-out-tx.in_flight-setting-into-.patch
+          "7146d39cd71eac14d652c607a86805f6"  #0010-net-tcp_bbr-v2-adjust-skb-tx.in_flight-upon-merge-in.patch
+          "341bbdd0d533da6a37bbcf6011d134d4"  #0011-net-tcp_bbr-v2-adjust-skb-tx.in_flight-upon-split-in.patch
+          "8cb5bd2d0cc3eb34a4c477d9e1b0f766"  #0012-net-tcp_bbr-v2-set-tx.in_flight-for-skbs-in-repair-w.patch
+          "390aace232c07ebdf99775e919fdd807"  #0013-net-tcp-add-new-ca-opts-flag-TCP_CONG_WANTS_CE_EVENT.patch
+          "f157575c1d1fd355c9f0dda58f90e944"  #0014-net-tcp-re-generalize-TSO-sizing-in-TCP-CC-module-AP.patch
+          "4de451f6a4fe99ca4af3b322e7ee1825"  #0015-net-tcp-add-fast_ack_mode-1-skip-rwin-check-in-tcp_f.patch
+          "4607cb02349094c824d24162c593a651"  #0016-net-tcp_bbr-v2-BBRv2-bbr2-congestion-control-for-Lin.patch
+          "c81314714563f91845d6f3d84869910d"  #0017-net-tcp_bbr-v2-remove-unnecessary-rs.delivered_ce-lo.patch
+          "6a051d6dd33cce8a35450ba0dbcd4020"  #0018-net-tcp_bbr-v2-remove-field-bw_rtts-that-is-unused-i.patch
+          "888aabc09bb088f131ab894c3d7af19d"  #0019-net-tcp_bbr-v2-remove-cycle_rand-parameter-that-is-u.patch
+          "2d79e78d7b644c224922a4fe2d8d73c8"  #0020-net-tcp_bbr-v2-don-t-assume-prior_cwnd-was-set-enter.patch
+          "1074c5c59c14a27ba21a081c2c8838b8") #0021-net-tcp_bbr-v2-Fix-missing-ECT-markings-on-retransmi.patch
+
+# block
+source+=("$patchsource/block-patches/0002-XANMOD-block-bfq-change-BLK_DEV_ZONED-depends-to-IOS.patch"
+         "$patchsource/block-patches/0003-XANMOD-block-set-rq_affinity-to-force-full-multithre.patch")
+md5sums+=("e58778120aca9f6cbb31915d5a3b0d9f"  #0002-XANMOD-block-bfq-change-BLK_DEV_ZONED-depends-to-IOS.patch
+          "e7b7cdc158f59c6198ae271efddf3fb0") #0003-XANMOD-block-set-rq_affinity-to-force-full-multithre.patch
+
+# clearlinux
+source+=("$patchsource/clearlinux-patches/0101-i8042-decrease-debug-message-level-to-info.patch"
+         "$patchsource/clearlinux-patches/0102-increase-the-ext4-default-commit-age.patch"
+         "$patchsource/clearlinux-patches/0103-silence-rapl.patch"
+         "$patchsource/clearlinux-patches/0104-pci-pme-wakeups.patch"
+         "$patchsource/clearlinux-patches/0105-ksm-wakeups.patch"
+         "$patchsource/clearlinux-patches/0106-intel_idle-tweak-cpuidle-cstates.patch"
+         "$patchsource/clearlinux-patches/0108-smpboot-reuse-timer-calibration.patch"
+         "$patchsource/clearlinux-patches/0109-initialize-ata-before-graphics.patch"
+         "$patchsource/clearlinux-patches/0110-give-rdrand-some-credit.patch"
+         "$patchsource/clearlinux-patches/0111-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch"
+         "$patchsource/clearlinux-patches/0112-init-wait-for-partition-and-retry-scan.patch"
+         "$patchsource/clearlinux-patches/0113-print-fsync-count-for-bootchart.patch"
+         "$patchsource/clearlinux-patches/0114-add-boot-option-to-allow-unsigned-modules.patch"
+         "$patchsource/clearlinux-patches/0115-enable-stateless-firmware-loading.patch"
+         "$patchsource/clearlinux-patches/0116-migrate-some-systemd-defaults-to-the-kernel-defaults.patch"
+         "$patchsource/clearlinux-patches/0117-xattr-allow-setting-user.-attributes-on-symlinks-by-.patch"
+         "$patchsource/clearlinux-patches/0118-add-scheduler-turbo3-patch.patch"
+         "$patchsource/clearlinux-patches/0119-use-lfence-instead-of-rep-and-nop.patch"
+         "$patchsource/clearlinux-patches/0121-locking-rwsem-spin-faster.patch"
+         "$patchsource/clearlinux-patches/0122-ata-libahci-ignore-staggered-spin-up.patch"
+         "$patchsource/clearlinux-patches/0123-print-CPU-that-faults.patch"
+         "$patchsource/clearlinux-patches/0124-x86-microcode-Force-update-a-uCode-even-if-the-rev-i.patch"
+         "$patchsource/clearlinux-patches/0125-x86-microcode-echo-2-reload-to-force-load-ucode.patch"
+         "$patchsource/clearlinux-patches/0126-fix-bug-in-ucode-force-reload-revision-check.patch"
+         "$patchsource/clearlinux-patches/0127-nvme-workaround.patch"
+         "$patchsource/clearlinux-patches/0128-don-t-report-an-error-if-PowerClamp-run-on-other-CPU.patch")
+md5sums+=("54db9173a84480019a507b3d521e4900"  #0101-i8042-decrease-debug-message-level-to-info.patch
+          "c74d43eed0b392be6186266401525e61"  #0102-increase-the-ext4-default-commit-age.patch
+          "47fa6adf0d324b8f2e822bdf1e609b2b"  #0103-silence-rapl.patch
+          "373e8b9f7f5a8040d7afb673af9ecbbd"  #0104-pci-pme-wakeups.patch
+          "41e9bad1652b3cfc10d0909bbffa4b9d"  #0105-ksm-wakeups.patch
+          "9096411a87c757be72863a221ee70087"  #0106-intel_idle-tweak-cpuidle-cstates.patch
+          "a1c63a226dd5e85e7ce339bb2f1b46ce"  #0108-smpboot-reuse-timer-calibration.patch
+          "05150402becb6f3966aa812c57e65d62"  #0109-initialize-ata-before-graphics.patch
+          "e78fa9e6bfa9e6cc9666bdc95352e6ae"  #0110-give-rdrand-some-credit.patch
+          "be65fd4bd13482a1ef0e5c4c52bd0293"  #0111-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch
+          "0649545f936191d71356f104b4be9828"  #0112-init-wait-for-partition-and-retry-scan.patch
+          "2a34bb57221b4bb4169003c830083f3e"  #0113-print-fsync-count-for-bootchart.patch
+          "6bdc4e521cea370925058afd7d6b0fc1"  #0114-add-boot-option-to-allow-unsigned-modules.patch
+          "23f08ce07b71058561076f8c62545768"  #0115-enable-stateless-firmware-loading.patch
+          "b6e025b5126638324043509ba1382a01"  #0116-migrate-some-systemd-defaults-to-the-kernel-defaults.patch
+          "278e2c0da12099fb055ada9c36265700"  #0117-xattr-allow-setting-user.-attributes-on-symlinks-by-.patch
+          "b538e12fd5ae76a9ae5243b1b26c2ae2"  #0118-add-scheduler-turbo3-patch.patch
+          "991f9a3a7380bd41e53cbf82b1c6c260"  #0119-use-lfence-instead-of-rep-and-nop.patch
+          "60e18c045e49f70abd2441648f2435cd"  #0121-locking-rwsem-spin-faster.patch
+          "8da8427e1dcb80252e0b0660a3c60a50"  #0122-ata-libahci-ignore-staggered-spin-up.patch
+          "570f130b2eae7a67696a5577aff76077"  #0123-print-CPU-that-faults.patch
+          "495f97ed7c14c97b58217e60d25f1a31"  #0124-x86-microcode-Force-update-a-uCode-even-if-the-rev-i.patch
+          "bd99806d6aeac102c60feda5b72b750a"  #0125-x86-microcode-echo-2-reload-to-force-load-ucode.patch
+          "f06882f502f54afef0be07e6b56dac8e"  #0126-fix-bug-in-ucode-force-reload-revision-check.patch
+          "e4bfd87f310ba2b7856a5e6719da58b0"  #0127-nvme-workaround.patch
+          "a33df819da6e41a640624779cc363a8c") #0128-don-t-report-an-error-if-PowerClamp-run-on-other-CPU.patch
+
+# cpu
+source+=("$patchsource/cpu-graysky2-patches/more-uarches-for-kernel-5.8+.patch"
+         "$patchsource/cpu-xanmod-patches/0012-XANMOD-init-Kconfig-Enable-O3-KBUILD_CFLAGS-optimiza.patch"
+         "$patchsource/cpu-xanmod-patches/0013-XANMOD-Makefile-Turn-off-loop-vectorization-for-GCC-.patch"
+         "$patchsource/cpu-sirlucjan-patches/0003-init-Kconfig-add-O1-flag.patch")
+md5sums+=("15bc6521aae3d5aaded3da70b95ba854"  #more-uarches-for-kernel-5.8+.patch
+          "2eabdcffa17414b0dd129dd5827947bf"  #0012-XANMOD-init-Kconfig-Enable-O3-KBUILD_CFLAGS-optimiza.patch
+          "468cc483703a864bf85b97939e5b7d1b"  #0013-XANMOD-Makefile-Turn-off-loop-vectorization-for-GCC-.patch
+          "9ed92b6421a4829c3be67af8e4b65a04") #0003-init-Kconfig-add-O1-flag.patch
+
+# compaction
+source+=("https://raw.githubusercontent.com/kevall474/kernel-patches/main/5.12/compaction-patches/0001-compaction-patches.patch")
+md5sums+=("98564f54c3f9a6da56c6156d26b3ea39") #0001-compaction-patches.patch
+
+# elevator
+source+=("$patchsource/elevator-xanmod-patches/0001-XANMOD-elevator-set-default-scheduler-to-bfq-for-blk.patch")
+md5sums+=("90e5f7c17bf202b56bf4436fbc24d482") #0001-XANMOD-elevator-set-default-scheduler-to-bfq-for-blk.patch
+
+# futex2
+source+=("$patchsource/futex-patches/0001-futex-resync-from-gitlab.collabora.com.patch"
+         "$patchsource/futex-tkg-patches/0007-v5.13-futex2_interface.patch")
+md5sums+=("85f4be6562ee033b83814353a12b61bd"  #0001-futex-resync-from-gitlab.collabora.com.patch
+          "2c0375b3cc9690a0f0f3d3e49df54d10") #0007-v5.13-futex2_interface.patch
+
+# intel
+source+=("$patchsource/intel-zen-patches/0010-ZEN-intel-pstate-Implement-enable-parameter.patch")
+md5sums+=("a13452de360638df606dceb1031c9a45") #0010-ZEN-intel-pstate-Implement-enable-parameter.patch
+
+# irq
+source+=("$patchsource/irq-zen-patches/0011-ZEN-Add-an-option-to-make-threadirqs-the-default.patch")
+md5sums+=("bc06c9355cf6b4c67714bdc6c40bcb39") #0011-ZEN-Add-an-option-to-make-threadirqs-the-default.patch
+
+# lrng
+source+=("$patchsource/lrng-patches/v41-0001-Linux-Random-Number-Generator.patch"
+         "$patchsource/lrng-patches/v41-0002-LRNG-allocate-one-DRNG-instance-per-NUMA-node.patch"
+         "$patchsource/lrng-patches/v41-0003-LRNG-sysctls-and-proc-interface.patch"
+         "$patchsource/lrng-patches/v41-0004-LRNG-add-switchable-DRNG-support.patch"
+         "$patchsource/lrng-patches/v41-0005-LRNG-add-common-generic-hash-support.patch"
+         "$patchsource/lrng-patches/v41-0006-crypto-DRBG-externalize-DRBG-functions-for-LRNG.patch"
+         "$patchsource/lrng-patches/v41-0007-LRNG-add-SP800-90A-DRBG-extension.patch"
+         "$patchsource/lrng-patches/v41-0008-LRNG-add-kernel-crypto-API-PRNG-extension.patch"
+         "$patchsource/lrng-patches/v41-0009-crypto-provide-access-to-a-static-Jitter-RNG-sta.patch"
+         "$patchsource/lrng-patches/v41-0010-LRNG-add-Jitter-RNG-fast-noise-source.patch"
+         "$patchsource/lrng-patches/v41-0011-LRNG-add-SP800-90B-compliant-health-tests.patch"
+         "$patchsource/lrng-patches/v41-0012-LRNG-add-interface-for-gathering-of-raw-entropy.patch"
+         "$patchsource/lrng-patches/v41-0013-LRNG-add-power-on-and-runtime-self-tests.patch")
+md5sums+=("006b98bc15ce286c51a28cc3bbf2e84f"  #v41-0001-Linux-Random-Number-Generator.patch
+          "7727d2bc6a5e4804f85e65ed4c0b0387"  #v41-0002-LRNG-allocate-one-DRNG-instance-per-NUMA-node.patch
+          "857f994ebffe24b1160f47b7c66ae276"  #v41-0003-LRNG-sysctls-and-proc-interface.patch
+          "4df38bd3b05cc88e539c3e43c026576b"  #v41-0004-LRNG-add-switchable-DRNG-support.patch
+          "b8b9f39f01c3585f9ed6ea188fba8377"  #v41-0005-LRNG-add-common-generic-hash-support.patch
+          "dbb510d6fc8ed89f7cef487d69f03720"  #v41-0006-crypto-DRBG-externalize-DRBG-functions-for-LRNG.patch
+          "20f11652be999958d2620c28d089c761"  #v41-0007-LRNG-add-SP800-90A-DRBG-extension.patch
+          "d2d87d82e797966aac03a64c5f66d9f4"  #v41-0008-LRNG-add-kernel-crypto-API-PRNG-extension.patch
+          "f20d5865e0a5623a311c9e39cd04edcd"  #v41-0009-crypto-provide-access-to-a-static-Jitter-RNG-sta.patch
+          "2ed7a06f3ab3d5608f3249b6dc996c95"  #v41-0010-LRNG-add-Jitter-RNG-fast-noise-source.patch
+          "9c97d551f93ef152c7f9c382bce4e6fb"  #v41-0011-LRNG-add-SP800-90B-compliant-health-tests.patch
+          "55afb3463d4d38c1dd7d321781c5d13f"  #v41-0012-LRNG-add-interface-for-gathering-of-raw-entropy.patch
+          "43cd2848b6512755defaff51789e5ade") #v41-0013-LRNG-add-power-on-and-runtime-self-tests.patch
+
+# lru
+source+=("$patchsource/lru-zen-patches/0001-include-linux-memcontrol.h-do-not-warn-in-page_memcg.patch"
+         "$patchsource/lru-zen-patches/0002-include-linux-nodemask.h-define-next_memory_node-if-.patch"
+         "$patchsource/lru-zen-patches/0003-mm-x86-support-the-access-bit-on-non-leaf-PMD-entrie.patch"
+         "$patchsource/lru-zen-patches/0004-include-linux-cgroup.h-export-cgroup_mutex.patch"
+         "$patchsource/lru-zen-patches/0005-mm-vmscan.c-refactor-shrink_node.patch"
+         "$patchsource/lru-zen-patches/0006-mm-workingset.c-refactor-pack_shadow-and-unpack_shad.patch"
+         "$patchsource/lru-zen-patches/0007-mm-multigenerational-lru-groundwork.patch"
+         "$patchsource/lru-zen-patches/0008-mm-multigenerational-lru-activation.patch"
+         "$patchsource/lru-zen-patches/0009-mm-multigenerational-lru-mm_struct-list.patch"
+         "$patchsource/lru-zen-patches/0010-mm-multigenerational-lru-aging.patch"
+         "$patchsource/lru-zen-patches/0011-mm-multigenerational-lru-eviction.patch"
+         "$patchsource/lru-zen-patches/0012-mm-multigenerational-lru-user-interface.patch"
+         "$patchsource/lru-zen-patches/0013-mm-multigenerational-lru-Kconfig.patch"
+         "$patchsource/lru-zen-patches/0014-mm-multigenerational-lru-documentation.patch"
+         "$patchsource/lru-zen-patches/0015-mm-fix-priority-queue-in-multigenerational-lru.patch")
+md5sums+=("SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP")
+
+# mm
+source+=("$patchsource/mm-patches/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch"
+         "$patchsource/mm-tkg-patches/0001-mm-Support-soft-dirty-flag-reset-for-VA-range.patch"
+         "$patchsource/mm-tkg-patches/0002-mm-Support-soft-dirty-flag-read-with-reset.patch"
+         "$patchsource/mm-xanmod-patches/0001-mm-vmscan-add-sysctl-knobs-for-protecting-clean-cach.patch"
+         "$patchsource/mm-xanmod-patches/0008-XANMOD-mm-vmscan-vm_swappiness-30-decreases-the-amou.patch"
+         "$patchsource/mm-zen-patches/0002-mm-swapfile-use-percpu_ref-to-serialize-against-conc.patch"
+         "$patchsource/mm-zen-patches/0003-mm-swap-remove-confusing-checking-for-non_swap_entry.patch"
+         "$patchsource/mm-zen-patches/0004-Revert-swap-fixes-after-stable-reverts.patch"
+         "$patchsource/mm-zen-patches/0013-ZEN-mm-Disable-watermark-boosting-by-default.patch"
+         "$patchsource/mm-zen-patches/0014-ZEN-mm-Stop-kswapd-early-when-nothing-s-waiting-for-.patch"
+         "$patchsource/mm-zen-patches/0015-ZEN-mm-Don-t-stop-kswapd-on-a-per-node-basis-when-th.patch")
+md5sums+=("SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP")
+
+# mq-deadline
+source+=("$patchsource/mq-deadline-patches/0009-ZEN-Add-CONFIG-to-rename-the-mq-deadline-scheduler-v3.patch")
+md5sums+=("SKIP")
+
+# ntfs3
+source+=("$patchsource/ntfs3-xanmod-patches/ntfs3-xanmod-patches.patch")
+md5sums+=("SKIP")
+
+# openrgb
+source+=("$patchsource/openrgb-zen-patches/0003-ZEN-Add-OpenRGB-patches.patch")
+md5sums+=("SKIP")
+
+# security
+source+=("$patchsource/security/security-xanmod-patches.patch")
+md5sums+=("SKIP")
+
+# timer
+source+=("$patchsource/timer-xanmod-patches/0004-XANMOD-kconfig-add-500Hz-timer-interrupt-kernel-conf.patch")
+md5sums+=("SKIP")
+
+# v4l2loopback
+source+=("$patchsource/v4l2loopback-pf-patches/0001-v4l2loopback-5.12-merge-v0.12.5.patch"
+         "$patchsource/v4l2loopback-pf-patches/0002-v4l2loopback-5.13-confine-v4l2loopback_cleanup_modul.patch")
+md5sums+=("SKIP"
+          "SKIP")
+
+# wine
+source+=("$patchsource/wine-patches/0007-v5.13-winesync.patch")
+md5sums+=("SKIP")
+
+# xanmod
+source+=("$patchsource/xanmod-patches/0005-XANMOD-kconfig-set-PREEMPT-and-RCU_BOOST-without-del.patch"
+         "$patchsource/xanmod-patches/0006-XANMOD-dcache-cache_pressure-50-decreases-the-rate-a.patch"
+         "$patchsource/xanmod-patches/0007-XANMOD-sched-autogroup-Add-kernel-parameter-and-conf.patch"
+         "$patchsource/xanmod-patches/0009-XANMOD-cpufreq-tunes-ondemand-and-conservative-gover.patch"
+         "$patchsource/xanmod-patches/0011-XANMOD-lib-kconfig.debug-disable-default-CONFIG_SYMB.patch")
+md5sums+=("SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP")
+
+# zen
+source+=("$patchsource/zen-patches/0002-ZEN-Add-VHBA-driver.patch"
+         "$patchsource/zen-patches/0006-ZEN-Disable-stack-conservation-for-GCC.patch"
+         "$patchsource/zen-patches/0008-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-C.patch")
+md5sums+=("SKIP"
+          "SKIP"
+          "SKIP")
+
+# zstd
+source+=("$patchsource/zstd-xanmod-patches/0001-lib-zstd-Add-kernel-specific-API.patch"
+         "$patchsource/zstd-xanmod-patches/0002-lib-zstd-Add-decompress_sources.h-for-decompress_unz.patch"
+         "$patchsource/zstd-xanmod-patches/0003-lib-zstd-Upgrade-to-latest-upstream-zstd-version-1.4.patch"
+         "$patchsource/zstd-xanmod-patches/0004-MAINTAINERS-Add-maintainer-entry-for-zstd.patch")
+md5sums+=("SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP")
+
+# misc
+source+=("$patchsource/misc-patches/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch"
+         "$patchsource/misc-patches/0005-Disable-CPU_FREQ_GOV_SCHEDUTIL.patch"
+         "$patchsource/misc-patches/vm.max_map_count.patch")
+md5sums+=("SKIP"
           "SKIP"
           "SKIP")
 
@@ -356,7 +458,7 @@ fi
 # MuQSS patch. 0001-MultiQueue-Skiplist-Scheduler-v0.210.patch with 5.13 kernel.
 # The patch is forced because there is no release from Con Kolivas for 5.13 kernel. Bugs in the kernel may occur.
 if [[ $_cpu_sched = "5" ]]; then
-  source+=("${patchsource}/muqss-kevall474-patches/0001-MultiQueue-Skiplist-Scheduler-v0.210.patch")
+  source+=("${patchsource}/muqss-patches/0001-MultiQueue-Skiplist-Scheduler-v0.210.patch")
   md5sums+=("SKIP")
 fi
 
@@ -431,6 +533,17 @@ prepare(){
   # Uncomment rapid_config and comment out configure and cpu_arch
   # rapid_config is meant to work with build.sh for automation building
   #rapid_config
+
+  scripts/config --enable CONFIG_LRU_GEN
+  scripts/config --enable CONFIG_LRU_GEN_ENABLED
+  scripts/config --enable CONFIG_LRU_GEN_STATS
+
+  scripts/config --enable CONFIG_LRNG
+  scripts/config --enable CONFIG_LRNG_OVERSAMPLE_ENTROPY_SOURCES
+  scripts/config --enable CONFIG_LRNG_CONTINUOUS_COMPRESSION_ENABLED
+  scripts/config --enable CONFIG_LRNG_ENABLE_CONTINUOUS_COMPRESSION
+  scripts/config --enable CONFIG_LRNG_SWITCHABLE_CONTINUOUS_COMPRESSION
+  scripts/config --enable CONFIG_LRNG_COLLECTION_SIZE_1024
 
   # Setting localversion
   msg2 "Setting localversion..."
