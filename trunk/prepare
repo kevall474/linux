@@ -1112,7 +1112,7 @@ configure(){
   fi
 
   sleep 2s
-  
+
   plain ""
   plain "#########################################"
   plain "Enable/disable CONFIG_SCHED_AUTOGROUP_DEFAULT_ENABLED"
@@ -1245,7 +1245,7 @@ configure(){
   fi
 
   sleep 2s
-  
+
   plain ""
   plain "#########################################"
   plain "Enable/disable OpenRGB SMBus access?"
@@ -1255,12 +1255,12 @@ configure(){
   plain "If you say yes to this option, support will be included for the"
   plain "Nuvoton NCT6775 and compatible SMBus controllers."
   plain ""
-  plain "SMBus access is necessary for controlling RGB RAM and" 
+  plain "SMBus access is necessary for controlling RGB RAM and"
   plain "certain motherboard on-board LEDs."
-  plain "If you are not trying to use OpenRGB to control RGB RAM or motherboard" 
+  plain "If you are not trying to use OpenRGB to control RGB RAM or motherboard"
   plain "LEDs, you may skip this section."
   plain ""
-  plain "ASUS and ASRock motherboards have their RGB controller on an SMBus interface that" 
+  plain "ASUS and ASRock motherboards have their RGB controller on an SMBus interface that"
   plain "is not accessible by an unmodified Linux kernel (for now)."
   read -rp "`echo $' > 1.Enable\n > 2.Disable\n > Default (Enable)\nchoice[1-2]: '`" _openrgb
   if [[ "$_openrgb" = "1" ]]; then
@@ -1273,7 +1273,7 @@ configure(){
     msg2 "Enable OpenRGB SMBus access"
     scripts/config --module CONFIG_I2C_NCT6775
   fi
-   
+
   sleep 2s
 
   plain ""
@@ -2053,7 +2053,7 @@ rapid_config(){
   scripts/config --enable CONFIG_BFQ_CGROUP_DEBUG
 
   sleep 2s
-  
+
   msg2 "Enable CONFIG_SCHED_AUTOGROUP_DEFAULT_ENABLED"
   scripts/config --enable CONFIG_SCHED_AUTOGROUP_DEFAULT_ENABLED
 
@@ -2084,13 +2084,21 @@ rapid_config(){
 
   msg2 "Enable SECURITY_FORK_BRUT"
   scripts/config --enable CONFIG_SECURITY_FORK_BRUT
-  
+
   sleep 2s
-  
+
   msg2 "Enable OpenRGB SMBus access"
   scripts/config --module CONFIG_I2C_NCT677
 
   sleep 2s
+
+  msg2 "Enable LRNG"
+  scripts/config --enable CONFIG_LRNG
+  scripts/config --enable CONFIG_LRNG_OVERSAMPLE_ENTROPY_SOURCES
+  scripts/config --enable CONFIG_LRNG_CONTINUOUS_COMPRESSION_ENABLED
+  scripts/config --enable CONFIG_LRNG_ENABLE_CONTINUOUS_COMPRESSION
+  scripts/config --enable CONFIG_LRNG_SWITCHABLE_CONTINUOUS_COMPRESSION
+  scripts/config --enable CONFIG_LRNG_COLLECTION_SIZE_1024
 
   if [[ $_cpu_sched = "1" ]]; then
     msg2 "Enable CacULE CPU scheduler"

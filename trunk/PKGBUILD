@@ -118,7 +118,7 @@ for _p in "${pkgname[@]}"; do
     _package${_p#$pkgbase}
   }"
 done
-pkgver=5.13.6
+pkgver=5.13.7
 major=5.13
 pkgrel=1
 arch=(x86_64)
@@ -134,7 +134,7 @@ patchsource=https://raw.githubusercontent.com/kevall474/kernel-patches-v2/main/$
 # base
 source=("https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-$pkgver.tar.xz"
         "config-$major")
-md5sums=("09065416c01ad7511b84f5ea31fb5323"  #linux-5.13.6.tar.xz
+md5sums=("9bd74571c148a7753f5a237ba52f8ee5"  #linux-5.13.7.tar.xz
          "8627ed9a9c387c842039fe2bbadd18cb") #config-5.13
 
 # acs
@@ -263,10 +263,10 @@ md5sums+=("98564f54c3f9a6da56c6156d26b3ea39") #0001-compaction-patches.patch
 source+=("$patchsource/elevator-xanmod-patches/0001-XANMOD-elevator-set-default-scheduler-to-bfq-for-blk.patch")
 md5sums+=("90e5f7c17bf202b56bf4436fbc24d482") #0001-XANMOD-elevator-set-default-scheduler-to-bfq-for-blk.patch
 
-# futex2
-source+=("$patchsource/futex-patches/0001-futex-resync-from-gitlab.collabora.com.patch"
+# futex
+source+=("$patchsource/futex-tkg-patches/0007-v5.13-fsync.patch"
          "$patchsource/futex-tkg-patches/0007-v5.13-futex2_interface.patch")
-md5sums+=("85f4be6562ee033b83814353a12b61bd"  #0001-futex-resync-from-gitlab.collabora.com.patch
+md5sums+=("3cd1d74ccdd581c588929cd30bc2065a"  #0007-v5.13-fsync.patch
           "2c0375b3cc9690a0f0f3d3e49df54d10") #0007-v5.13-futex2_interface.patch
 
 # intel
@@ -305,91 +305,63 @@ md5sums+=("006b98bc15ce286c51a28cc3bbf2e84f"  #v41-0001-Linux-Random-Number-Gene
           "55afb3463d4d38c1dd7d321781c5d13f"  #v41-0012-LRNG-add-interface-for-gathering-of-raw-entropy.patch
           "43cd2848b6512755defaff51789e5ade") #v41-0013-LRNG-add-power-on-and-runtime-self-tests.patch
 
-# lru
-source+=("$patchsource/lru-zen-patches/0001-include-linux-memcontrol.h-do-not-warn-in-page_memcg.patch"
-         "$patchsource/lru-zen-patches/0002-include-linux-nodemask.h-define-next_memory_node-if-.patch"
-         "$patchsource/lru-zen-patches/0003-mm-x86-support-the-access-bit-on-non-leaf-PMD-entrie.patch"
-         "$patchsource/lru-zen-patches/0004-include-linux-cgroup.h-export-cgroup_mutex.patch"
-         "$patchsource/lru-zen-patches/0005-mm-vmscan.c-refactor-shrink_node.patch"
-         "$patchsource/lru-zen-patches/0006-mm-workingset.c-refactor-pack_shadow-and-unpack_shad.patch"
-         "$patchsource/lru-zen-patches/0007-mm-multigenerational-lru-groundwork.patch"
-         "$patchsource/lru-zen-patches/0008-mm-multigenerational-lru-activation.patch"
-         "$patchsource/lru-zen-patches/0009-mm-multigenerational-lru-mm_struct-list.patch"
-         "$patchsource/lru-zen-patches/0010-mm-multigenerational-lru-aging.patch"
-         "$patchsource/lru-zen-patches/0011-mm-multigenerational-lru-eviction.patch"
-         "$patchsource/lru-zen-patches/0012-mm-multigenerational-lru-user-interface.patch"
-         "$patchsource/lru-zen-patches/0013-mm-multigenerational-lru-Kconfig.patch"
-         "$patchsource/lru-zen-patches/0014-mm-multigenerational-lru-documentation.patch"
-         "$patchsource/lru-zen-patches/0015-mm-fix-priority-queue-in-multigenerational-lru.patch")
-md5sums+=("SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP")
-
 # mm
 source+=("$patchsource/mm-patches/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch"
+         "$patchsource/mm-pf-patches/0001-mm-5.13-protect-file-mappings-under-memory-pressure.patch"
+         "$patchsource/mm-pf-patches/0002-mm-5.13-protect-anonymous-mappings-under-memory-pres.patch"
          "$patchsource/mm-tkg-patches/0001-mm-Support-soft-dirty-flag-reset-for-VA-range.patch"
          "$patchsource/mm-tkg-patches/0002-mm-Support-soft-dirty-flag-read-with-reset.patch"
-         "$patchsource/mm-xanmod-patches/0001-mm-vmscan-add-sysctl-knobs-for-protecting-clean-cach.patch"
          "$patchsource/mm-xanmod-patches/0008-XANMOD-mm-vmscan-vm_swappiness-30-decreases-the-amou.patch"
          "$patchsource/mm-zen-patches/0002-mm-swapfile-use-percpu_ref-to-serialize-against-conc.patch"
          "$patchsource/mm-zen-patches/0003-mm-swap-remove-confusing-checking-for-non_swap_entry.patch"
          "$patchsource/mm-zen-patches/0004-Revert-swap-fixes-after-stable-reverts.patch"
          "$patchsource/mm-zen-patches/0013-ZEN-mm-Disable-watermark-boosting-by-default.patch"
          "$patchsource/mm-zen-patches/0014-ZEN-mm-Stop-kswapd-early-when-nothing-s-waiting-for-.patch"
-         "$patchsource/mm-zen-patches/0015-ZEN-mm-Don-t-stop-kswapd-on-a-per-node-basis-when-th.patch")
-md5sums+=("SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP"
-          "SKIP")
+         "$patchsource/mm-zen-patches/0015-ZEN-mm-Don-t-stop-kswapd-on-a-per-node-basis-when-th.patch"
+         "$patchsource/mm-zen-patches/0024-mm-vmscan-add-sysctl-knobs-for-protecting-clean-cach.patch")
+md5sums+=("26be410fdc6d7c4f4e122a74fda6f96b"  #0004-mm-set-8-megabytes-for-address_space-level-file-read.patch
+          "7c0ec741ff6eb64296f41564f77bb946"  #0001-mm-5.13-protect-file-mappings-under-memory-pressure.patch
+          "c7b60a51ca14e1957aeab97e2c93c672"  #0002-mm-5.13-protect-anonymous-mappings-under-memory-pres.patch
+          "d6b3bcd857e74530a9d0347c6dc05c13"  #0001-mm-Support-soft-dirty-flag-reset-for-VA-range.patch
+          "1e7a53eae980951494ee630853d39d98"  #0002-mm-Support-soft-dirty-flag-read-with-reset.patch
+          "45e37e9feb1010271d6c537a3c2f3bf5"  #0008-XANMOD-mm-vmscan-vm_swappiness-30-decreases-the-amou.patch
+          "f3437dc0536f5ba600ad98b233a556a5"  #0002-mm-swapfile-use-percpu_ref-to-serialize-against-conc.patch
+          "f8a76421e812ff8e11a1fc171bf9c141"  #0003-mm-swap-remove-confusing-checking-for-non_swap_entry.patch
+          "19273060b4e9459475058536c480c4c6"  #0004-Revert-swap-fixes-after-stable-reverts.patch
+          "6af95507d914ebc79fd6d58643863383"  #0013-ZEN-mm-Disable-watermark-boosting-by-default.patch
+          "c313937d9170be3a6fd484de937ee615"  #0014-ZEN-mm-Stop-kswapd-early-when-nothing-s-waiting-for-.patch
+          "894d0c31781a3733c238cd3ba203c017"  #0015-ZEN-mm-Don-t-stop-kswapd-on-a-per-node-basis-when-th.patch
+          "a1c54bae97afbe0614f5cd9c3c767e58") #0024-mm-vmscan-add-sysctl-knobs-for-protecting-clean-cach.patch
 
 # mq-deadline
 source+=("$patchsource/mq-deadline-patches/0009-ZEN-Add-CONFIG-to-rename-the-mq-deadline-scheduler-v3.patch")
-md5sums+=("SKIP")
+md5sums+=("3234ef6a0549247cc27669b76e687b19") #0009-ZEN-Add-CONFIG-to-rename-the-mq-deadline-scheduler-v3.patch
 
 # ntfs3
 source+=("$patchsource/ntfs3-xanmod-patches/ntfs3-xanmod-patches.patch")
-md5sums+=("SKIP")
+md5sums+=("40c4983de6192962e26d7a6f79ca1cec") #ntfs3-xanmod-patches.patch
 
 # openrgb
 source+=("$patchsource/openrgb-zen-patches/0003-ZEN-Add-OpenRGB-patches.patch")
-md5sums+=("SKIP")
+md5sums+=("48e7ccaf1168550be498da0b6c9882b4") #0003-ZEN-Add-OpenRGB-patches.patch
 
 # security
 source+=("$patchsource/security/security-xanmod-patches.patch")
-md5sums+=("SKIP")
+md5sums+=("8330e56c07373af22f8d9f03b8cdfc32") #security-xanmod-patches.patch
 
 # timer
 source+=("$patchsource/timer-xanmod-patches/0004-XANMOD-kconfig-add-500Hz-timer-interrupt-kernel-conf.patch")
-md5sums+=("SKIP")
+md5sums+=("ec30ff83f107a00aa1f5943963a5291c") #0004-XANMOD-kconfig-add-500Hz-timer-interrupt-kernel-conf.patch
 
 # v4l2loopback
 source+=("$patchsource/v4l2loopback-pf-patches/0001-v4l2loopback-5.12-merge-v0.12.5.patch"
          "$patchsource/v4l2loopback-pf-patches/0002-v4l2loopback-5.13-confine-v4l2loopback_cleanup_modul.patch")
-md5sums+=("SKIP"
-          "SKIP")
+md5sums+=("7f9b0cf8f9253d0e1e931a39f83ae9e0"  #0001-v4l2loopback-5.12-merge-v0.12.5.patch
+          "05f75cb594382a875170ae9632ae070b") #0002-v4l2loopback-5.13-confine-v4l2loopback_cleanup_modul.patch
 
 # wine
 source+=("$patchsource/wine-patches/0007-v5.13-winesync.patch")
-md5sums+=("SKIP")
+md5sums+=("9573b92353399343db8a691c9b208300") #0007-v5.13-winesync.patch
 
 # xanmod
 source+=("$patchsource/xanmod-patches/0005-XANMOD-kconfig-set-PREEMPT-and-RCU_BOOST-without-del.patch"
@@ -406,8 +378,14 @@ md5sums+=("SKIP"
 # zen
 source+=("$patchsource/zen-patches/0002-ZEN-Add-VHBA-driver.patch"
          "$patchsource/zen-patches/0006-ZEN-Disable-stack-conservation-for-GCC.patch"
-         "$patchsource/zen-patches/0008-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-C.patch")
+         "$patchsource/zen-patches/0008-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-C.patch"
+         "$patchsource/zen-patches/0001-block-another-attempt-to-fix-discard-merging.patch"
+         "$patchsource/zen-patches/0025-ZEN-Tune-default-CLEAN_LOW-MIN_KBYTES-values.patch"
+         "$patchsource/zen-patches/0026-ZEN-Set-CLEAN_MIN_KBYTES-to-0.patch")
 md5sums+=("SKIP"
+          "SKIP"
+          "SKIP"
+          "SKIP"
           "SKIP"
           "SKIP")
 
@@ -522,28 +500,400 @@ prepare(){
   #  sleep 2s
   #fi
 
-  # Customize the kernel
-  source "${startdir}"/prepare
+  plain ""
 
-  configure
+  msg2 "Set SIG level to SHA512"
+  scripts/config --undefine MODULE_SIG_FORCE
+  scripts/config --disable MODULE_SIG_FORCE
+  scripts/config --enable CONFIG_MODULE_SIG
+  scripts/config --enable CONFIG_MODULE_SIG_ALL
+  scripts/config --disable CONFIG_MODULE_SIG_SHA1
+  scripts/config --disable CONFIG_MODULE_SIG_SHA224
+  scripts/config --disable CONFIG_MODULE_SIG_SHA256
+  scripts/config --disable CONFIG_MODULE_SIG_SHA384
+  scripts/config --enable CONFIG_MODULE_SIG_SHA512
+  scripts/config  --set-val CONFIG_MODULE_SIG_HASH "sha512"
 
-  cpu_arch
+  sleep 2s
 
-  # Automation building with rapid_config
-  # Uncomment rapid_config and comment out configure and cpu_arch
-  # rapid_config is meant to work with build.sh for automation building
-  #rapid_config
+  msg2 "Set module compression to ZSTD"
+  scripts/config --disable CONFIG_MODULE_COMPRESS_NONE
+  scripts/config --disable CONFIG_MODULE_COMPRESS_GZIP
+  scripts/config --disable CONFIG_MODULE_COMPRESS_XZ
+  scripts/config --enable CONFIG_MODULE_COMPRESS_ZSTD
 
-  scripts/config --enable CONFIG_LRU_GEN
-  scripts/config --enable CONFIG_LRU_GEN_ENABLED
-  scripts/config --enable CONFIG_LRU_GEN_STATS
+  sleep 2s
 
+  msg2 "Enable CONFIG_STACK_VALIDATION"
+  scripts/config --enable CONFIG_STACK_VALIDATION
+
+  sleep 2s
+
+  msg2 "Enable IKCONFIG"
+  scripts/config --enable CONFIG_IKCONFIG
+  scripts/config --enable CONFIG_IKCONFIG_PROC
+
+  sleep 2s
+
+  msg2 "Disable NUMA"
+  scripts/config --disable CONFIG_NUMA
+  scripts/config --disable CONFIG_AMD_NUMA
+  scripts/config --disable CONFIG_X86_64_ACPI_NUMA
+  scripts/config --disable CONFIG_NODES_SPAN_OTHER_NODES
+  scripts/config --disable CONFIG_NUMA_EMU
+  scripts/config --disable CONFIG_NEED_MULTIPLE_NODES
+  scripts/config --disable CONFIG_USE_PERCPU_NUMA_NODE_ID
+  scripts/config --disable CONFIG_ACPI_NUMA
+  scripts/config --disable CONFIG_ARCH_SUPPORTS_NUMA_BALANCING
+  scripts/config --disable CONFIG_NODES_SHIFT
+  scripts/config --undefine CONFIG_NODES_SHIFT
+  scripts/config --disable CONFIG_NEED_MULTIPLE_NODES
+
+  sleep 2s
+
+  msg2 "Disable FUNCTION_TRACER/GRAPH_TRACER"
+  scripts/config --disable CONFIG_FUNCTION_TRACER
+  scripts/config --disable CONFIG_STACK_TRACER
+
+  sleep 2s
+
+  msg2 "Disable CONFIG_USER_NS_UNPRIVILEGED"
+  scripts/config --enable CONFIG_USER_NS_UNPRIVILEGED
+
+  sleep 2s
+
+  msg2 "Set CPU Frequency scaling CONFIG_CPU_FREQ_DEFAULT_GOV/CONFIG_CPU_FREQ_GOV for performance"
+  scripts/config --disable CONFIG_CPU_FREQ_DEFAULT_GOV_POWERSAVE
+  scripts/config --disable CONFIG_CPU_FREQ_GOV_POWERSAVE
+  scripts/config --disable CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE
+  scripts/config --disable CONFIG_CPU_FREQ_GOV_USERSPACE
+  scripts/config --disable CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND
+  scripts/config --disable CONFIG_CPU_FREQ_GOV_ONDEMAND
+  scripts/config --disable CONFIG_CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
+  scripts/config --disable CONFIG_CPU_FREQ_GOV_CONSERVATIVE
+  scripts/config --disable CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL
+  scripts/config --disable CONFIG_CPU_FREQ_GOV_SCHEDUTIL
+  scripts/config --enable CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE
+  scripts/config --enable CONFIG_CPU_FREQ_GOV_PERFORMANCE
+
+  sleep 2s
+
+  msg2 "Set CPU DEVFREQ GOV CONFIG_DEVFREQ_GOV for performance"
+  scripts/config --disable CONFIG_DEVFREQ_GOV_SIMPLE_ONDEMAND
+  scripts/config --undefine CONFIG_DEVFREQ_GOV_SIMPLE_ONDEMAND
+  scripts/config --disable CONFIG_DEVFREQ_GOV_POWERSAVE
+  scripts/config --disable CONFIG_DEVFREQ_GOV_USERSPACE
+  scripts/config --disable CONFIG_DEVFREQ_GOV_PASSIVE
+  scripts/config --enable CONFIG_DEVFREQ_GOV_PERFORMANCE
+
+  sleep 2s
+
+  msg2 "Set PCIEASPM DRIVER to performance"
+  scripts/config --enable CONFIG_PCIEASPM
+  scripts/config --enable CONFIG_PCIEASPM_PERFORMANCE
+
+  sleep 2s
+
+  msg2 "Set CONFIG_PCIE_BUS for performance"
+  scripts/config --enable CONFIG_PCIE_BUS_PERFORMANCE
+
+  sleep 2s
+
+  msg2 "Enable CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3"
+  scripts/config --disable CONFIG_CC_OPTIMIZE_BASAL
+  scripts/config --disable CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
+  scripts/config --disable CONFIG_CC_OPTIMIZE_FOR_SIZE
+  scripts/config --enable CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3
+
+  sleep 2s
+
+  if [[ $_cpu_sched = "1" ]] || [[ $_cpu_sched = "2" ]]; then
+    msg2 "Set timer frequency to 2000HZ"
+    scripts/config --enable CONFIG_HZ_2000
+    scripts/config --set-val CONFIG_HZ 2000
+  else
+    msg2 "Set timer frequency to 1000HZ"
+    scripts/config --enable CONFIG_HZ_1000
+    scripts/config --set-val CONFIG_HZ 1000
+  fi
+
+  sleep 2s
+
+  msg2 "Enable PREEMPT"
+  scripts/config --disable CONFIG_PREEMPT_NONE
+  scripts/config --disable CONFIG_PREEMPT_VOLUNTARY
+  scripts/config --enable CONFIG_PREEMPT
+  scripts/config --enable CONFIG_PREEMPT_COUNT
+  scripts/config --enable CONFIG_PREEMPTION
+
+  sleep 2s
+
+  msg2 "Enable CONFIG_FORCE_IRQ_THREADING"
+  scripts/config --enable CONFIG_FORCE_IRQ_THREADING
+
+  sleep 2s
+
+  msg2 "Set to full tickless"
+  scripts/config --disable CONFIG_HZ_PERIODIC
+  scripts/config --disable CONFIG_NO_HZ_IDLE
+  scripts/config --enable CONFIG_NO_HZ_FULL
+  scripts/config --enable CONFIG_NO_HZ
+  scripts/config --enable CONFIG_NO_HZ_COMMON
+  #scripts/config --enable CONFIG_CONTEXT_TRACKING
+  #scripts/config --disable CONFIG_CONTEXT_TRACKING_FORCE
+
+  sleep 2s
+
+  msg2 "Enable tristate V4L2 loopback device"
+  scripts/config --module CONFIG_V4L2_LOOPBACK
+
+  sleep 2s
+
+  msg2 "Enable ntfs"
+  scripts/config --module CONFIG_NTFS_FS
+  scripts/config --enable CONFIG_NTFS_RW
+  msg2 "Enable ntfs3"
+  scripts/config --module CONFIG_NTFS3_FS
+  scripts/config --enable CONFIG_NTFS3_64BIT_CLUSTER
+  scripts/config --enable CONFIG_NTFS3_LZX_XPRESS
+  scripts/config --enable CONFIG_NTFS3_FS_POSIX_ACL
+
+  sleep 2s
+
+  msg2 "Enable BBR/BBR2 TCP"
+  scripts/config --module CONFIG_TCP_CONG_BBR
+  scripts/config --module CONFIG_TCP_CONG_BBR2
+
+  sleep 2s
+
+  msg2 "Enable CONFIG_VHBA"
+  scripts/config --module CONFIG_VHBA
+
+  sleep 2s
+
+  msg2 "Disabling Kyber I/O scheduler"
+  scripts/config --disable CONFIG_MQ_IOSCHED_KYBER
+
+  sleep 2s
+
+  msg2 "Enable Deadline I/O scheduler"
+  scripts/config --enable CONFIG_MQ_IOSCHED_DEADLINE
+
+  sleep 2s
+
+  msg2 "Enable MQ-Deadline-Nodefault I/O scheduler"
+  scripts/config --enable CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
+
+  sleep 2s
+
+  msg2 "Enable CONFIG_BFQ_CGROUP_DEBUG"
+  scripts/config --enable CONFIG_BFQ_CGROUP_DEBUG
+
+  sleep 2s
+
+  msg2 "Enable CONFIG_SCHED_AUTOGROUP_DEFAULT_ENABLED"
+  scripts/config --enable CONFIG_SCHED_AUTOGROUP_DEFAULT_ENABLED
+
+  sleep 2s
+
+  if [[ $_cpu_sched != "1" ]] && [[ $_cpu_sched != "2" ]]; then
+    msg2 "Enable ZEN_INTERACTIVE"
+    scripts/config --enable ZEN_INTERACTIVE
+
+    sleep 2s
+  fi
+
+  msg2 "Enable Fsync support"
+  scripts/config --enable CONFIG_FUTEX
+  scripts/config --enable CONFIG_FUTEX_PI
+
+  sleep 2s
+
+  msg2 "Enable Futex2 support"
+  scripts/config --enable CONFIG_FUTEX2
+
+  sleep 2s
+
+  msg2 "Enable winesync support"
+  scripts/config --module CONFIG_WINESYNC
+
+  sleep 2s
+
+  msg2 "Enable SECURITY_FORK_BRUT"
+  scripts/config --enable CONFIG_SECURITY_FORK_BRUT
+
+  sleep 2s
+
+  msg2 "Enable OpenRGB SMBus access"
+  scripts/config --module CONFIG_I2C_NCT677
+
+  sleep 2s
+
+  msg2 "Enable LRNG"
   scripts/config --enable CONFIG_LRNG
   scripts/config --enable CONFIG_LRNG_OVERSAMPLE_ENTROPY_SOURCES
   scripts/config --enable CONFIG_LRNG_CONTINUOUS_COMPRESSION_ENABLED
   scripts/config --enable CONFIG_LRNG_ENABLE_CONTINUOUS_COMPRESSION
   scripts/config --enable CONFIG_LRNG_SWITCHABLE_CONTINUOUS_COMPRESSION
   scripts/config --enable CONFIG_LRNG_COLLECTION_SIZE_1024
+
+  sleep 2s
+
+  msg2 "Enable UNEVICTABLE_FILE"
+  scripts/config --enable CONFIG_UNEVICTABLE_FILE
+
+  sleep 2s
+
+  #msg2 "Enable LRU"
+  #scripts/config --enable CONFIG_LRU_GEN
+  #scripts/config --enable CONFIG_LRU_GEN_ENABLED
+  #scripts/config --enable CONFIG_LRU_GEN_STATS
+
+  #sleep 2s
+
+  if [[ $_cpu_sched = "1" ]]; then
+    msg2 "Enable CacULE CPU scheduler"
+    scripts/config --enable CONFIG_CACULE_SCHED
+  elif [[ $_cpu_sched = "2" ]]; then
+    msg2 "Enable CacULE CPU scheduler"
+    scripts/config --enable CONFIG_CACULE_SCHED
+    msg2 "Enable CacULE-RDB CPU scheduler"
+    scripts/config --enable CONFIG_CACULE_RDB
+  elif [[ $_cpu_sched = "3" ]]; then
+    msg2 "Enable CONFIG_SCHED_ALT, this feature enable alternative CPU scheduler"
+    scripts/config --enable CONFIG_SCHED_ALT
+    msg2 "Enable BMQ CPU scheduler"
+    scripts/config --enable CONFIG_SCHED_BMQ
+    scripts/config --disable CONFIG_SCHED_PDS
+  elif [[ $_cpu_sched = "4" ]]; then
+    msg2 "Enable CONFIG_SCHED_ALT, this feature enable alternative CPU scheduler"
+    scripts/config --enable CONFIG_SCHED_ALT
+    msg2 "Enable PDS CPU scheduler"
+    scripts/config --disable CONFIG_SCHED_BMQ
+    scripts/config --enable CONFIG_SCHED_PDS
+  elif [[ $_cpu_sched = "5" ]]; then
+    msg2 "Enable MuQSS"
+    scripts/config --enable CONFIG_SCHED_MC
+    scripts/config --enable CONFIG_SCHED_SMT
+    scripts/config --enable CONFIG_SMP
+    scripts/config --enable CONFIG_SCHED_MC_PRIO
+    scripts/config --enable CONFIG_SCHED_MUQSS
+    msg2 "Set to RQ_MC"
+    scripts/config --enable CONFIG_RQ_MC
+    scripts/config --set-val CONFIG_SHARERQ 2
+  else
+    msg2 "Enable CFS"
+    scripts/config --enable SCHED_NORMAL
+    scripts/config --enable SCHED_BATCH
+    scripts/config --enable SCHED_IDLE
+    scripts/config --enable CONFIG_CGROUP_SCHED
+    scripts/config --enable CONFIG_FAIR_GROUP_SCHED
+    scripts/config --enable CONFIG_CFS_BANDWIDTH
+    scripts/config --enable CONFIG_SCHED_DEBUG
+  fi
+
+  sleep 2s
+
+  if [[ $_cpu_sched = "1" ]] || [[ $_cpu_sched = "2" ]]; then
+    msg2 "Apply suggested config by Hamad Al Marri for CacULE"
+    # General Setup
+    echo "General Setup"
+    sleep 1s
+    scripts/config --disable CONFIG_EXPERT
+    # Note:
+    # CONFIG_NO_HZ_FULL requires you to add
+    # the boot parameter "nohz_full=" in your
+    # grup. For example, in case your machine
+    # has 8 CPUS, "nohz_full=1-7" makes
+    # all CPUs (except CPU0) adaptive ticks.
+    # Without "nohz_full=1-7", no benfit of
+    # selecting CONFIG_NO_HZ_FULL
+    #
+    # Please see the discussion here:
+    # https://github.com/hamadmarri/cacule-cpu-scheduler/discussions/23#discussioncomment-711456
+    #scripts/config --enable CONFIG_NO_HZ_FULL
+
+    scripts/config --enable CONFIG_PREEMPT
+    scripts/config --enable CONFIG_SCHED_AUTOGROUP
+    scripts/config --disable CONFIG_BSD_PROCESS_ACCT
+    scripts/config --disable CONFIG_TASK_XACCT
+    scripts/config --disable CONFIG_PSI
+    scripts/config --disable CONFIG_MEMCG
+    scripts/config --disable CONFIG_CGROUP_CPUACCT
+    scripts/config --disable CONFIG_CGROUP_DEBUG
+    scripts/config --disable CONFIG_CHECKPOINT_RESTORE
+    scripts/config --disable CONFIG_SLAB_MERGE_DEFAULT
+    scripts/config --disable CONFIG_SLAB_FREELIST_HARDENED
+    scripts/config --disable CONFIG_SLUB_CPU_PARTIAL
+    scripts/config --disable CONFIG_PROFILING
+    # Processor type and features
+    echo "Processor type and features"
+    sleep 1s
+    scripts/config --disable CONFIG_RETPOLINE
+    scripts/config --disable CONFIG_X86_5LEVEL
+    scripts/config --disable CONFIG_KEXEC
+    scripts/config --disable CONFIG_KEXEC_FILE
+    scripts/config --disable CONFIG_CRASH_DUMP
+    #scripts/config --set-val CONFIG_NR_CPUS $(nproc)
+    # if you are not using this kernel as guest in a virtual machine,
+    # then disable CONFIG_HYPERVISOR_GUEST
+    #./scripts/config --disable CONFIG_HYPERVISOR_GUEST
+    # General architecture-dependent options
+    echo "General architecture-dependent options"
+    sleep 1s
+    scripts/config --disable CONFIG_KPROBES
+    # Kernel hacking
+    echo "Kernel hacking"
+    sleep 1s
+    scripts/config --disable CONFIG_FTRACE
+    scripts/config --disable CONFIG_DEBUG_KERNEL
+    scripts/config --disable CONFIG_PAGE_EXTENSION
+    scripts/config --set-val CONFIG_RCU_CPU_STALL_TIMEOUT 4
+    scripts/config --disable CONFIG_PRINTK_TIME
+    scripts/config --disable CONFIG_DEBUG_INFO
+    scripts/config --disable CONFIG_ENABLE_MUST_CHECK
+    scripts/config --disable CONFIG_STRIP_ASM_SYMS
+    scripts/config --disable CONFIG_UNUSED_SYMBOLS
+    scripts/config --disable CONFIG_DEBUG_FS
+    scripts/config --disable CONFIG_OPTIMIZE_INLINING
+    scripts/config --disable CONFIG_DEBUG_SECTION_MISMATCH
+    scripts/config --disable CONFIG_SECTION_MISMATCH_WARN_ONLY
+    scripts/config --disable CONFIG_STACK_VALIDATION
+    scripts/config --disable CONFIG_DEBUG_FORCE_WEAK_PER_CPU
+    scripts/config --disable CONFIG_MAGIC_SYSRQ
+    scripts/config --disable CONFIG_MAGIC_SYSRQ_SERIAL
+    scripts/config --disable CONFIG_PAGE_EXTENSION
+    scripts/config --disable CONFIG_DEBUG_PAGEALLOC
+    scripts/config --disable CONFIG_PAGE_OWNER
+    scripts/config --disable CONFIG_DEBUG_MEMORY_INIT
+    scripts/config --disable CONFIG_HARDLOCKUP_DETECTOR
+    scripts/config --disable CONFIG_SOFTLOCKUP_DETECTOR
+    scripts/config --disable CONFIG_DETECT_HUNG_TASK
+    scripts/config --disable CONFIG_WQ_WATCHDOG
+    scripts/config --set-val CONFIG_PANIC_TIMEOUT 10
+    scripts/config --disable CONFIG_SCHED_DEBUG
+    scripts/config --disable CONFIG_SCHEDSTATS
+    scripts/config --disable CONFIG_SCHED_STACK_END_CHECK
+    scripts/config --disable CONFIG_STACKTRACE
+    scripts/config --disable CONFIG_DEBUG_BUGVERBOSE
+    scripts/config --set-val CONFIG_RCU_CPU_STALL_TIMEOUT 4
+    scripts/config --disable CONFIG_RCU_TRACE
+    scripts/config --disable CONFIG_FAULT_INJECTION
+    scripts/config --disable CONFIG_LATENCYTOP
+    scripts/config --disable CONFIG_PROVIDE_OHCI1394_DMA_INIT
+    scripts/config --disable RUNTIME_TESTING_MENU
+    scripts/config --disable CONFIG_MEMTEST
+    scripts/config --disable CONFIG_KGDB
+    scripts/config --disable CONFIG_EARLY_PRINTK
+    scripts/config --disable CONFIG_DOUBLEFAULT
+
+    sleep 2s
+  fi
+
+  msg2 "Set CONFIG_GENERIC_CPU"
+  scripts/config --enable CONFIG_GENERIC_CPU
+
+  sleep 2s
 
   # Setting localversion
   msg2 "Setting localversion..."
